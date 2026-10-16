@@ -252,8 +252,8 @@ checked, and the size and SHA-256 of `index.html` after the change.
 - **Not checked:** other kinds of disagreement (an arrow type, a label, the model type),
   runs beyond two per version, and whether the new section changes Thea's first read of an
   intake; her intake objections looked alike in both versions.
-- **Main page after this change:** `index.html`, 652533 bytes, SHA-256
-  `ae3befd0cdffb960486da5d07734590e1eee1f22016d6f06e370d9d130879f05`.
+- **Main page after this change:** `index.html`, 652579 bytes, SHA-256
+  `b496aaec5a272290b8a8839a9067418245beb47e6b9aaf0184888554fb10969c` (with the Oct 16 upload-field note from `main`).
 - **Approval:** the wording is ours, written from the author's specification. Not to be
   merged until an author, or a team member for them, approves it.
 - **Enforced by:** `THEA_SYSTEM` in `index.html` (Thea's instructions to Claude).
