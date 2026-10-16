@@ -243,8 +243,8 @@ checked, and the size and SHA-256 of `index.html` after the change.
   In both draft runs Thea still disagreed with the label, as the decision wants.
 - **Not checked:** one run of each case per version; box names and arrow types chosen by
   Drew; a researcher who later adopts Drew's word as their own.
-- **Main page after this change:** `index.html`, 652295 bytes, SHA-256
-  `03ad997e03e3b1842aea6ac667793922db7452bafa7d11cc7e5ea380d87c1cf9`.
+- **Main page after this change:** `index.html`, 652341 bytes, SHA-256
+  `4896e3a51ec0fd861aa7f36d17d4a9c293b6974c582e3bad461402c7274e780c` (with the Oct 16 upload-field note from `main`).
 - **Approval:** the decision is the authors'; the wording is ours. Not to be merged until
   an author, or a team member for them, approves it.
 - **Enforced by:** `THEA_SYSTEM` in `index.html` (Thea's instructions to Claude).
