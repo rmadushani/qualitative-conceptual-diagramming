@@ -254,8 +254,8 @@ checked, and the size and SHA-256 of `index.html` after the change.
   intake; her intake objections looked alike in both versions.
 - **Main page after this change:** `index.html`, 652579 bytes, SHA-256
   `b496aaec5a272290b8a8839a9067418245beb47e6b9aaf0184888554fb10969c` (with the Oct 16 upload-field note from `main`).
-- **Approval:** the wording is ours, written from the author's specification. Not to be
-  merged until an author, or a team member for them, approves it.
+- **Approval:** the wording is ours, written from the author's specification. Approved by an author on Oct 19, 2026
+  (relayed by a team member).
 - **Enforced by:** `THEA_SYSTEM` in `index.html` (Thea's instructions to Claude).
 
 ---
