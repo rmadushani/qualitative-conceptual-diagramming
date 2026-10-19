@@ -245,8 +245,8 @@ checked, and the size and SHA-256 of `index.html` after the change.
   Drew; a researcher who later adopts Drew's word as their own.
 - **Main page after this change:** `index.html`, 652341 bytes, SHA-256
   `4896e3a51ec0fd861aa7f36d17d4a9c293b6974c582e3bad461402c7274e780c` (with the Oct 16 upload-field note from `main`).
-- **Approval:** the decision is the authors'; the wording is ours. Not to be merged until
-  an author, or a team member for them, approves it.
+- **Approval:** the decision is the authors'; the wording is ours. Approved by an author on Oct 19, 2026
+  (relayed by a team member).
 - **Enforced by:** `THEA_SYSTEM` in `index.html` (Thea's instructions to Claude).
 
 ---
