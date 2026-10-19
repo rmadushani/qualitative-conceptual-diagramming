@@ -14,7 +14,7 @@ The try-another-browser note now also appears where the PDF is attached (tracker
 ## 2026-10-15
 
 Thea now makes her case once and then leaves the call to the researcher (tracker item
-TD-14, `decision-rules-log.md` R7). Awaiting author approval of the wording.
+TD-14, `decision-rules-log.md` R7). Approved by an author on Oct 19.
 
 - **New "Whose call it is" section in Thea's instructions**, written from an author's Sep 26
   specification: the researcher decides when to stop; the second time Thea presses a point
@@ -23,6 +23,18 @@ TD-14, `decision-rules-log.md` R7). Awaiting author approval of the wording.
 - Tested live against the current prompt, two runs each: the current prompt re-argued after
   every pushback and reopened the point after "that's settled"; the new one deferred at the
   first pushback and gave the requested label straight away.
+
+Thea now says when a word on the figure is Drew's choice, not the researcher's (tracker
+item TD-06, `decision-rules-log.md` R8). Approved by an author on Oct 19.
+
+- **Thea reads Drew's actions**, where his arrow labels and box names are; she had been told
+  to ignore everything but his message.
+- **Before criticising a word on the figure she checks who introduced it.** If it is Drew's,
+  she says so, makes her case, and suggests asking Drew for a better one. The disagreement
+  stays.
+- Tested live against the current prompt: given labels Drew chose himself, the current prompt
+  asked the researcher to justify them; the new one said "The arrow labels are Drew's, not
+  yours."
 
 The transcript is taller (tracker item TD-12, `decision-rules-log.md` R6).
 
