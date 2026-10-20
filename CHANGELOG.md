@@ -11,6 +11,13 @@ The rate-limit fallback no longer says the message was not sent (tracker item TD
   Drew draws again; your last message is kept." The message stays in the conversation and
   goes out with the next send, so "Your message was not sent" was untrue.
 
+After someone declines Claude access, the page says how to turn it back on instead of
+telling them to reload (tracker item TD-23, `decision-rules-log.md` R10).
+
+- **New wording:** "This tool won't work without Claude access. Turn access back on from the
+  arrow next to the page title, under Permissions, then press Thea thinks or Drew draws
+  again; your last message is kept." Reloading did not bring the access prompt back.
+
 ## 2026-10-16
 
 The try-another-browser note now also appears where the PDF is attached (tracker item TD-10,

@@ -314,6 +314,31 @@ checked, and the size and SHA-256 of `index.html` after the change.
   `d388b1c20c74061a9ed1edeb37302376befc94a740af32807e835253c4337ea0`.
 - **Enforced by:** `rateLimitCopy` in `index.html`.
 
+### R10. After someone declines Claude access, the page says how to turn it back on, not "reload" (TD-23)
+
+- **Rule:** When a send fails because the reader declined Claude access (`not_granted`), the
+  page says: "This tool won't work without Claude access. Turn access back on from the arrow
+  next to the page title, under Permissions, then press Thea thinks or Drew draws again;
+  your last message is kept." It used to say "…reload the page and accept the prompt to talk
+  to Thea and Drew."
+- **Why:** TD-23. Testers (Oct 16) found that reloading does not bring the access prompt
+  back, so the old message sent readers in a circle, and that turning access back on under
+  Permissions and sending again works without a reload. The page already asks for access
+  again on the next send (R4). The wording follows the tracker's suggestion, with the same
+  ending as R4 and R9.
+- **The change:** the `not_granted` line of `sampleErrorCopy`. Behaviour unchanged.
+- **Checks (Oct 20, headless Chrome with a stand-in for Claude that returns `not_granted` on
+  the first send and answers the second; old page vs new):** the new message appears;
+  pressing Thea thinks again gets a reply with no reload; the second call carried the failed
+  intake.
+- **Not checked:** a real decline in a published copy; the Permissions menu itself is
+  claude.ai's, outside the page.
+- **Not changed:** "Your session expired -- reload the page." (`session_expired`), where a
+  reload may really be needed.
+- **Main page after this change:** `index.html`, 653177 bytes, SHA-256
+  `b04577b7b2512adc14ed47dfd2b1788fbd076ea799313298d30fa0818f96ca6c`.
+- **Enforced by:** `sampleErrorCopy` in `index.html`.
+
 ---
 
 ## Open items
@@ -373,6 +398,7 @@ Not tested: Drew, voice, SVG/PNG/PPTX export, PDF or PPTX upload (`PUBLISHING.md
 | Oct 15, 2026 | R8 | Thea attributes Drew's word choices to Drew; tested against the current prompt | TD-06 |
 | Oct 16, 2026 | R2 | Browser note also added to the upload field's hint | TD-10 |
 | Oct 20, 2026 | R9 | Rate-limit fallback says the message is kept | TD-22 |
+| Oct 20, 2026 | R10 | After a decline, say how to turn access back on, not "reload" | TD-23 |
 
 ## Considered, not built
 
