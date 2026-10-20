@@ -2440,7 +2440,7 @@ function rateLimitCopy(err){
 function sampleErrorCopy(err){
   switch(err && err.code){
     case 'not_granted':
-      return "Claude access wasn't allowed for this artifact -- reload the page and accept the prompt to talk to Thea and Drew.";
+      return "This tool won't work without Claude access. Turn access back on from the arrow next to the page title, under Permissions, then press Thea thinks or Drew draws again; your last message is kept.";
     case 'rate_limited':
       return rateLimitCopy(err);
     case 'refused':
