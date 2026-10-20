@@ -2432,7 +2432,7 @@ function rateLimitCopy(err){
   if(msg && /\s/.test(msg) && msg.toLowerCase().indexOf('rate_limited') === -1){
     return 'Too many requests right now — ' + msg.replace(/\.+$/, '') + '.';
   }
-  return 'Too many requests right now — wait a moment and try again. Your message was not sent.';
+  return 'Too many requests right now — wait a moment, then press Thea thinks or Drew draws again; your last message is kept.';
 }
 
 // Maps the capability's stable error codes to what a researcher should be

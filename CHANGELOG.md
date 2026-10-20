@@ -2,6 +2,15 @@
 
 Changes to `index.html` (the Figure Creation Agent — Thea & Drew).
 
+## 2026-10-20
+
+The rate-limit fallback no longer says the message was not sent (tracker item TD-22,
+`decision-rules-log.md` R9).
+
+- **New wording:** "Too many requests right now — wait a moment, then press Thea thinks or
+  Drew draws again; your last message is kept." The message stays in the conversation and
+  goes out with the next send, so "Your message was not sent" was untrue.
+
 ## 2026-10-16
 
 The try-another-browser note now also appears where the PDF is attached (tracker item TD-10,
