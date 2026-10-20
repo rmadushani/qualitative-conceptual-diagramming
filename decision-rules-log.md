@@ -1,7 +1,7 @@
 # Thea & Drew: decision rules log
 
 **Scope:** `index.html`, the Figure Creation Agent (Thea & Drew).
-**Started:** Oct 14, 2026. **Last updated:** Oct 16, 2026. Rules are numbered in the order
+**Started:** Oct 14, 2026. **Last updated:** Oct 20, 2026. Rules are numbered in the order
 they were decided. Changes made before this log existed are recorded in `CHANGELOG.md` only.
 
 Each rule gives what was decided, why, what changed, how it was checked, what was not
@@ -294,6 +294,26 @@ checked, and the size and SHA-256 of `index.html` after the change.
   (relayed by a team member).
 - **Enforced by:** `THEA_SYSTEM` in `index.html` (Thea's instructions to Claude).
 
+### R9. The rate-limit fallback says the message is kept, not "not sent" (TD-22)
+
+- **Rule:** When the service rejects a message for a rate limit and gives no usable wording,
+  the page says: "Too many requests right now — wait a moment, then press Thea thinks or Drew
+  draws again; your last message is kept." It used to end "…and try again. Your message was
+  not sent."
+- **Why:** TD-22 (open item 2). The page adds the reader's message to the conversation before
+  the request and keeps it if the request fails, so it goes out with the next send. "Not
+  sent" was untrue and invited the reader to retype it, which sends it twice. The wording
+  now matches R4's.
+- **The change:** the last line of `rateLimitCopy`. Behaviour unchanged.
+- **Checks (Oct 20, headless Chrome with a stand-in for Claude that rate-limits the first
+  send and answers the second; old page vs new):** the new line appears; pressing Thea
+  thinks again gets a reply with no retyping; that second call carried three turns
+  (instructions, the failed intake, "Let's keep going."), so the message was indeed kept.
+- **Not checked:** a real rate-limit error.
+- **Main page after this change:** `index.html`, 653098 bytes, SHA-256
+  `d388b1c20c74061a9ed1edeb37302376befc94a740af32807e835253c4337ea0`.
+- **Enforced by:** `rateLimitCopy` in `index.html`.
+
 ---
 
 ## Open items
@@ -305,7 +325,7 @@ checked, and the size and SHA-256 of `index.html` after the change.
    before the request and does not remove it on an error, so it goes out with the next
    request. The fallback line "Your message was not sent" is then only half true, and a
    reader who retypes the message sends it twice. Found while checking TD-08; not in its
-   scope. To be raised as its own tracker item. Seen live on Oct 14 (see Test results):
+   scope. Raised as TD-22; the wording is fixed by R9 (Oct 20). Seen live on Oct 14 (see Test results):
    after the first request failed, Thea's reply to "Let's keep going." answered the failed
    intake.
 3. The first message can fail while the viewer is granting Claude access. In the Oct 14
@@ -352,6 +372,7 @@ Not tested: Drew, voice, SVG/PNG/PPTX export, PDF or PPTX upload (`PUBLISHING.md
 | Oct 15, 2026 | R7 | "Whose call it is": Thea makes her case once, then defers; tested against the current prompt | TD-14 |
 | Oct 15, 2026 | R8 | Thea attributes Drew's word choices to Drew; tested against the current prompt | TD-06 |
 | Oct 16, 2026 | R2 | Browser note also added to the upload field's hint | TD-10 |
+| Oct 20, 2026 | R9 | Rate-limit fallback says the message is kept | TD-22 |
 
 ## Considered, not built
 
