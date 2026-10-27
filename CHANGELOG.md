@@ -14,8 +14,10 @@ and model ID; until then the page says it isn't connected and sends nothing.
   kind of HTTP error. The rate-limit wording is unchanged; none says "reload".
 - **The claude.ai access code is gone** (`sample`, `requestSample` and its messages). This build
   can't run as a claude.ai artifact; the last one that can is tagged `last-artifact-build`.
-- The data notice and the "signed in to Claude" line still describe claude.ai; they wait on IT's
-  answers and the notice owner.
+- The data notice still describes claude.ai; it waits on IT's answers and the notice owner.
+
+The consent screen no longer says "You'll need to be signed in to Claude to use this tool."
+(`decision-rules-log.md` R12), since readers no longer need a claude.ai account.
 
 ## 2026-10-20
 

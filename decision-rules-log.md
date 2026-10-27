@@ -395,7 +395,7 @@ wording is gone; it still holds for builds up to the git tag `last-artifact-buil
   request format IT's endpoint expects; timeouts and token limits under real load.
 - **Not changed, to be updated by the notice owner:** the data notice ("What Anthropic does
   with it", including the claude.ai opt-out steps), the first line of the consent screen
-  ("You'll need to be signed in to Claude to use this tool."), the "passed to Claude,
+  ("You'll need to be signed in to Claude to use this tool."; removed later by R12), the "passed to Claude,
   Anthropic's AI" and "Anthropic's own privacy policy" lines, and R2's two "try a different
   browser" notes, which concern the claude.ai viewer. All depend on IT's answers and the
   notice owner's wording.
@@ -405,6 +405,24 @@ wording is gone; it still holds for builds up to the git tag `last-artifact-buil
   `abc146f0f91a2454af3a51cc7473cf7916d08c5c95733cf583658c06a5743eba`.
 - **Enforced by:** the IT block, `buildClaudeRequest`, `claudeFetch`, `replyText`,
   `claudeErrorCopy` and `callClaude` in `index.html`.
+
+### R12. The consent screen no longer says to sign in to Claude
+
+- **Rule:** The heading "You'll need to be signed in to Claude to use this tool." is removed
+  from the top of the consent screen. "If a PDF you attach won't load, try a different
+  browser." (R2) is now its first line.
+- **Why:** requested by a team member on Oct 27. Since R11 the page reaches Claude through
+  the project's Bedrock endpoint, so readers no longer need a claude.ai account. The line was
+  added on Oct 6 for the claude.ai version (tracker ALL-02); builds up to the tag
+  `last-artifact-build` keep it.
+- **The change:** one `<h3>` removed. Nothing else on the consent screen changed; the data
+  notice and the other claude.ai lines listed under R11 still wait on the notice owner.
+- **Checks:** headless Chrome, before and after: the page loads with no console errors; the
+  consent screen opens with the PDF note, then "Where your words go"; "signed in to Claude"
+  no longer appears in the file.
+- **Main page after this change:** `index.html`, 655809 bytes, SHA-256
+  `32b9ce06559dd8896338e3ec4aad88dce5ec68eeaccd6f46d936d2f86c74fdb9`.
+- **Enforced by:** page edit only.
 
 ---
 
@@ -468,6 +486,7 @@ Not tested: Drew, voice, SVG/PNG/PPTX export, PDF or PPTX upload (`PUBLISHING.md
 | Oct 20, 2026 | R9 | Rate-limit fallback says the message is kept | TD-22 |
 | Oct 20, 2026 | R10 | After a decline, say how to turn access back on, not "reload" | TD-23 |
 | Oct 27, 2026 | R11 | Claude reached through a Bedrock endpoint (IT placeholders); R4 and R10 replaced | TD-24 |
+| Oct 27, 2026 | R12 | "Signed in to Claude" line removed from the consent screen | team request |
 
 ## Considered, not built
 
