@@ -1,7 +1,7 @@
 # Thea & Drew: decision rules log
 
 **Scope:** `index.html`, the Figure Creation Agent (Thea & Drew).
-**Started:** Oct 14, 2026. **Last updated:** Oct 20, 2026. Rules are numbered in the order
+**Started:** Oct 14, 2026. **Last updated:** Oct 27, 2026. Rules are numbered in the order
 they were decided. Changes made before this log existed are recorded in `CHANGELOG.md` only.
 
 Each rule gives what was decided, why, what changed, how it was checked, what was not
@@ -108,6 +108,9 @@ checked, and the size and SHA-256 of `index.html` after the change.
 - **Enforced by:** `callClaude` and `rateLimitCopy` in `index.html`.
 
 ### R4. When the page cannot reach Claude, it says what the reader can do, and never "reload" (TD-20)
+
+**Replaced by R11 (Oct 27).** The page no longer uses the claude.ai artifact runtime, so this
+wording is gone; it still holds for builds up to the git tag `last-artifact-build`.
 
 - **Rule:** If `window.claude` is missing, the page says "Open this link in a browser where
   you're signed in to claude.ai." If Claude access is missing, it asks for it again at send
@@ -316,6 +319,9 @@ checked, and the size and SHA-256 of `index.html` after the change.
 
 ### R10. After someone declines Claude access, the page says how to turn it back on, not "reload" (TD-23)
 
+**Replaced by R11 (Oct 27).** The page no longer uses the claude.ai artifact runtime, so this
+wording is gone; it still holds for builds up to the git tag `last-artifact-build`.
+
 - **Rule:** When a send fails because the reader declined Claude access (`not_granted`), the
   page says: "This tool won't work without Claude access. Turn access back on from the arrow
   next to the page title, under Permissions, then press Thea thinks or Drew draws again;
@@ -339,6 +345,67 @@ checked, and the size and SHA-256 of `index.html` after the change.
   `b04577b7b2512adc14ed47dfd2b1788fbd076ea799313298d30fa0818f96ca6c`.
 - **Enforced by:** `sampleErrorCopy` in `index.html`.
 
+### R11. Thea and Drew call Claude through an Amazon Bedrock endpoint, not the claude.ai runtime (TD-24)
+
+- **Rule:** Every Thea and Drew message is one POST to `BEDROCK_ENDPOINT`, an endpoint IT runs.
+  The page holds no credentials and makes no automatic retry. Until IT replaces the two
+  placeholders, the page makes no request and says "This build isn't connected to Claude
+  yet, so Thea and Drew can't reply. Your last message is kept."
+- **Why:** TD-24, part of moving the tools to the project's AWS account (PRI-01). The claude.ai
+  runtime made every reader spend their own Claude access and caused the TD-20 failures.
+- **The change:**
+  - A marked IT block above `callClaude` with `BEDROCK_ENDPOINT` and `BEDROCK_MODEL_ID`
+    (placeholders; the model is Claude Sonnet 4.6). Below it, starting values: temperature 0,
+    max tokens 2000 (Thea) and 4000 (Drew), timeouts 60 s (Thea) and 120 s (Drew).
+  - `buildClaudeRequest` builds the body in Anthropic Messages format in one place: `model`,
+    `system` (Thea's or Drew's instructions, no longer folded into a user turn), `messages`,
+    `temperature`, `max_tokens`. If IT's endpoint passes it straight to Bedrock's
+    InvokeModel, the model ID goes in the URL and the body needs
+    `anthropic_version: "bedrock-2023-05-31"` in place of `model`; the comment there says so.
+  - `apiMessages` drops anything before the first user turn and joins consecutive same-role
+    turns with a blank line. A failed send leaves the reader's message in the conversation
+    (R9), so two user turns in a row happen, and the API needs them merged.
+  - `claudeFetch` makes one fetch with an abort timeout that also covers reading the body,
+    and throws `network`, `timeout`, `http` (with the status and the service's own message)
+    or `bad_response`. `replyText` joins the text blocks and throws `truncated` at
+    `stop_reason: max_tokens` (a cut-off Drew action list would break `parseDrewResponse`, so
+    such a reply is never used or stored), `refused` at `refusal`, and `empty`.
+  - `claudeErrorCopy` replaces `sampleErrorCopy`, keeping the "Trouble reaching Claude: "
+    prefix: not connected, network, timeout, truncated, empty, refused, unreadable reply,
+    429 (`rateLimitCopy`, unchanged, so a wait is shown only when the service states one),
+    401/403, 400/413, 5xx, and anything else (the service's text plus the retry line). No
+    message says "reload".
+  - Removed: `sampleFn`, `requestSample`, `noSampleCopy`, `PERMANENT_ERROR_CODES`,
+    `sampleErrorCopy`, and the comments that referred to them. The file no longer mentions
+    `sample`. Unchanged: Thea's and Drew's instructions, everything after the reply (Drew's
+    actions, the diagram), `downloadsFn` and the exports.
+- **Checks (Oct 27, headless Chrome with a stand-in `fetch`):** with the placeholders in
+  place, sends show the "not connected" message, the buttons re-enable, and no request goes
+  out (0 fetches). With a test copy pointed at a fake endpoint, one send made exactly one
+  request in every case, the buttons re-enabled, and a following send carried the failed
+  message: normal Thea reply; normal Drew JSON reply (diagram drawn); `max_tokens`; empty;
+  refusal; 429 "Try again in 2 minutes." (shown as "try again in 2 minutes"); 401; 400;
+  500; an unlisted 418 (service text plus the retry line); unreadable JSON; a request that
+  never answers (timeout shortened to 0.3 s for the test); and a network failure. Each
+  showed its message from the table. Every request had a `system` field, and the retry after
+  a failure sent the failed intake and "Let's keep going." as one user turn. With no
+  claude.ai runtime, SVG export fell back to a plain browser download ("Downloaded
+  figure.svg.").
+- **Not checked:** a real call to Bedrock, since IT supplies the endpoint and model ID; the
+  request format IT's endpoint expects; timeouts and token limits under real load.
+- **Not changed, to be updated by the notice owner:** the data notice ("What Anthropic does
+  with it", including the claude.ai opt-out steps), the first line of the consent screen
+  ("You'll need to be signed in to Claude to use this tool."), the "passed to Claude,
+  Anthropic's AI" and "Anthropic's own privacy policy" lines, and R2's two "try a different
+  browser" notes, which concern the claude.ai viewer. All depend on IT's answers and the
+  notice owner's wording.
+- **Publishing:** this build cannot run as a claude.ai artifact. The last build that can is
+  tagged `last-artifact-build` (`50a6631`); publish artifacts from that tag.
+- **Main page after this change:** `index.html`, 655880 bytes, SHA-256
+  `abc146f0f91a2454af3a51cc7473cf7916d08c5c95733cf583658c06a5743eba`.
+- **Enforced by:** the IT block, `buildClaudeRequest`, `claudeFetch`, `replyText`,
+  `claudeErrorCopy` and `callClaude` in `index.html`.
+
 ---
 
 ## Open items
@@ -361,6 +428,7 @@ checked, and the size and SHA-256 of `index.html` after the change.
    here. The error is not one of the codes `sampleErrorCopy` names, so the reader sees the
    service's text with no hint that sending again works. The error code was not captured.
    R4 adds the retry hint (Oct 15).
+   No longer applies after R11 (no claude.ai access prompt).
 4. Replies are shown as plain text, so Markdown from Claude appears literally (Thea's
    `**bold**` shows its asterisks). Not in any tracker item yet.
 
@@ -399,6 +467,7 @@ Not tested: Drew, voice, SVG/PNG/PPTX export, PDF or PPTX upload (`PUBLISHING.md
 | Oct 16, 2026 | R2 | Browser note also added to the upload field's hint | TD-10 |
 | Oct 20, 2026 | R9 | Rate-limit fallback says the message is kept | TD-22 |
 | Oct 20, 2026 | R10 | After a decline, say how to turn access back on, not "reload" | TD-23 |
+| Oct 27, 2026 | R11 | Claude reached through a Bedrock endpoint (IT placeholders); R4 and R10 replaced | TD-24 |
 
 ## Considered, not built
 

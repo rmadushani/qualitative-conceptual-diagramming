@@ -2,6 +2,21 @@
 
 Changes to `index.html` (the Figure Creation Agent — Thea & Drew).
 
+## 2026-10-27
+
+Thea and Drew now reach Claude through an Amazon Bedrock endpoint instead of the claude.ai
+artifact runtime (tracker item TD-24, `decision-rules-log.md` R11). IT fills in the endpoint
+and model ID; until then the page says it isn't connected and sends nothing.
+
+- **One request per message to `BEDROCK_ENDPOINT`**, with Thea's or Drew's instructions in the
+  request's `system` field, temperature 0, and per-persona token limits and timeouts. No retry.
+- **New error messages** for the network, timeouts, cut-off or empty replies, refusals and each
+  kind of HTTP error. The rate-limit wording is unchanged; none says "reload".
+- **The claude.ai access code is gone** (`sample`, `requestSample` and its messages). This build
+  can't run as a claude.ai artifact; the last one that can is tagged `last-artifact-build`.
+- The data notice and the "signed in to Claude" line still describe claude.ai; they wait on IT's
+  answers and the notice owner.
+
 ## 2026-10-20
 
 The rate-limit fallback no longer says the message was not sent (tracker item TD-22,
